@@ -1,11 +1,10 @@
-# Checklist: Evolução para App e History Chart
+# Checklist: Instalação PWA
 
-- [/] Atualizar Interface Mobile (`index.css`)
-  - [ ] Retirar comportamento oculto/expandido da Sidebar em telas pequenas.
-  - [ ] Configurar flexbox inferior para a aba inferior.
-  - [ ] Transformar `nav-items` em ícones quadrados com fontes minúsculas de Tab.
-- [ ] Construir Motor de Time-Series (`App.jsx`)
-  - [ ] Importar `AreaChart` e `Area` e ícone `CalendarDays` (opcional).
-  - [ ] Construir o hook associativo `historyAggr` agregando receitas e custos por Mês.
-  - [ ] Projetar a Grid visual expandível e injetar o Chart.
-  - [ ] Ocultar Logo e botão de Sair no Mobile Navigation ou arrumar o seu Flex position.
+- [/] Configuração Nativa Web (Arquitetura PWA)
+  - [ ] Criar `manifest.json` com especificações do ícone, splash screen e standalone mode.
+  - [ ] Adaptar tags `<meta>` do `index.html` para permissões iOS/Android.
+- [ ] Criação do Módulo "Instalar App" (`App.jsx`)
+  - [ ] Injetar botão extra "Instalar App" no Navigation.
+  - [ ] Adicionar evento global `window.addEventListener('beforeinstallprompt')`.
+  - [ ] Injetar Box explicativo híbrido (condicional se é iOS ou se é Prompt Nativo de Android).
+  - [ ] Desenhão do botão Verde Mágico de "Baixar App".

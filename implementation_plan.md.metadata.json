@@ -1,7 +1,7 @@
 {
   "artifactType": "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
-  "summary": "Plano para Menu Mobile inferior e Gráfico de Histórico Temporal.",
-  "updatedAt": "2026-04-09T01:27:03.785868Z",
-  "version": "2",
+  "summary": "Plano para implantação de Manifest PWA e View Integrada de Instalação Mobile (Android/iOS).",
+  "updatedAt": "2026-04-09T01:31:47.366003900Z",
+  "version": "3",
   "requestFeedback": true
 }

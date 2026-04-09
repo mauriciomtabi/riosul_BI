@@ -3,8 +3,7 @@ import { rawDataset } from './data';
 import { 
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, Legend, ResponsiveContainer,
   PieChart, Pie, Cell, LabelList, AreaChart, Area
-} from 'recharts';
-import { LayoutDashboard, Truck, LogOut, TrendingUp, TrendingDown, DollarSign, Wallet, Menu, Moon, Sun, Settings, UploadCloud, Database, User, Lock, BarChart2, PieChart as PieChartIcon, Activity } from 'lucide-react';
+import { LayoutDashboard, Truck, LogOut, TrendingUp, TrendingDown, DollarSign, Wallet, Menu, Moon, Sun, Settings, UploadCloud, Database, User, Lock, BarChart2, PieChart as PieChartIcon, Activity, Smartphone } from 'lucide-react';
 import './index.css';
 
 const formatNum = (value) => {
@@ -31,6 +30,28 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
+
+  // PWA Install Prompt
+  const [deferredPrompt, setDeferredPrompt] = useState(null);
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
+  useEffect(() => {
+    const handleBeforeInstallPrompt = (e) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+    };
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    return () => window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+  }, []);
+
+  const handleInstallClick = async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === 'accepted') {
+      setDeferredPrompt(null);
+    }
+  };
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -194,6 +215,9 @@ function App() {
           </li>
           <li className={`nav-item ${activeTab === 'settings' ? 'active' : ''}`} onClick={() => setActiveTab('settings')} title="Configurações">
             <Settings size={20} /> <span className="sidebar-text">Configurações</span>
+          </li>
+          <li className={`nav-item ${activeTab === 'install' ? 'active' : ''}`} onClick={() => setActiveTab('install')} title="Instalar App">
+            <Smartphone size={20} /> <span className="sidebar-text">Instalar</span>
           </li>
           <div className="mobile-logout-spacer"></div>
           <li className="nav-item" title="Sair" onClick={() => setIsAuthenticated(false)}>
@@ -564,6 +588,49 @@ function App() {
                   <button style={{ backgroundColor: 'transparent', color: 'var(--text-main)', border: '1px solid var(--card-border)', padding: '10px 20px', borderRadius: '6px', fontWeight: 600, cursor: 'pointer' }}>Restaurar Padrões</button>
                   <button style={{ backgroundColor: '#3b82f6', color: '#fff', border: 'none', padding: '10px 20px', borderRadius: '6px', fontWeight: 600, cursor: 'pointer' }}>Executar Sincronização</button>
                 </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {activeTab === 'install' && (
+          <div className="card" style={{ maxWidth: '600px', margin: '0 auto', textAlign: 'center' }}>
+            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
+              <div className="icon-box green" style={{ width: '70px', height: '70px', borderRadius: '20px', marginBottom: 0 }}>
+                <Smartphone size={36} />
+              </div>
+            </div>
+            <h2 style={{ marginBottom: '15px' }}>Instalar Aplicativo Oficial</h2>
+            <p style={{ color: 'var(--text-muted)', marginBottom: '30px', lineHeight: '1.6' }}>
+              Tenha o Dashboard Analítico e Gestão de Frotas da Riosul diretamente na tela inicial do seu dispositivo. Um ícone exclusivo será criado para acesso unificado e visual em tela cheia.
+            </p>
+
+            {isIOS ? (
+              <div style={{ backgroundColor: 'var(--hover-bg)', padding: '25px', borderRadius: '12px', textAlign: 'left', border: '1px solid var(--card-border)' }}>
+                <h4 style={{ marginBottom: '20px', color: '#fff', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <Smartphone size={20} color="var(--text-main)" /> Instruções Obrigatórias (iPhone/iPad)
+                </h4>
+                <p style={{ color: 'var(--text-muted)', marginBottom: '15px', fontSize: '0.9rem' }}>
+                  A Apple bloqueia a instalação via botão neste navegador. Por favor siga os 2 passos rápidos:
+                </p>
+                <div style={{ backgroundColor: 'rgba(255,255,255,0.03)', padding: '15px', borderRadius: '8px', marginBottom: '10px' }}>
+                  <p style={{ color: 'var(--text-main)', fontSize: '0.95rem' }}>1. Toque no ícone de <strong>Compartilhar</strong> (o pequeno quadrado com uma seta para cima) posicionado na aba inferior do painel do Safari.</p>
+                </div>
+                <div style={{ backgroundColor: 'rgba(255,255,255,0.03)', padding: '15px', borderRadius: '8px' }}>
+                  <p style={{ color: 'var(--text-main)', fontSize: '0.95rem' }}>2. Role levemente para baixo no menu e selecione a opção <strong>"Adicionar à Tela de Início"</strong>. E pronto!</p>
+                </div>
+              </div>
+            ) : (
+              <div>
+                {deferredPrompt ? (
+                  <button className="login-btn" onClick={handleInstallClick} style={{ width: 'auto', padding: '15px 50px', fontSize: '1.1rem', boxShadow: '0 0 30px rgba(16, 185, 129, 0.4)' }}>
+                    Baixar e Instalar App
+                  </button>
+                ) : (
+                  <div style={{ backgroundColor: 'var(--hover-bg)', padding: '20px', borderRadius: '12px', display: 'inline-block' }}>
+                      <p style={{ color: 'var(--text-muted)' }}>✓ Você já possui o app instalado ou está num dispositivo incompatível.</p>
+                  </div>
+                )}
               </div>
             )}
           </div>

@@ -1,23 +1,28 @@
-# Implementação de Menu Mobile Inferior e Gráfico Histórico
+# Instalação Mobile Web-App (PWA) e Instruções
 
-Atendendo as métricas visuais modernas de Web Apps e aprofundando o BI com dados longitudinais.
+O usuário deseja que a plataforma passe a se comportar como um aplicativo instalável de celular e quer uma via expressa ("um clique") para o download.
+
+## Análise Técnica (O Problema do iOS vs Android)
+
+Para que sites (Vercel) se comportem e sejam baixados como aplicativos com ícone na tela inicial e navegação sem barra de URL (Fullscreen), precisamos transformá-lo num **PWA (Progressive Web App)**. 
+
+No entanto, a arquitetura fechada da Apple **bloqueia** qualquer "Botão de Instalação Direta" dentro de sites.
+- **👉 No Android (Chrome):** Conseguimos capturar o evento do sistema e oferecer um botão mágico nativo de "Baixar App" sem que o usuário faça nada além de confirmar.
+- **🍎 No iPhone (iOS/Safari):** É impossível realizar o download via botão de clique. A Apple te obriga legalmente a ensinar o usuário a clicar no ícone nativo de `[Compartilhar]` do Safari e depois `[Adicionar à Tela de Início]`.
 
 ## Proposed Changes
 
-### 1. Menu Mobile (Tab Bar) - `index.css` e `App.jsx`
-O comportamento do "botão hambúrguer" de abrir a lateral será desabilitado em celulares. Em vez disso, a barra lateral se transformará em uma **Tab Bar fixa inferior** nos dispositivos móveis, idêntica a aplicativos como Instagram ou bancos.
-- **[MODIFY] `index.css`**: Dentro de `@media (max-width: 800px)`, reescrever a `.sidebar` para `position: fixed; bottom: 0; width: 100vw; height: 75px; flex-direction: row;`.
-- Ascondelaremos a Logo da Riosul na versão celular apenas na *Tab Bar*, focando apenas nos Ícones (Visão Geral, Frota, Configuração, Sair).
-- Modificar o Flex da classe `.nav-item` para empilhar em coluna (`Flex-direction: column`) para suportar ícone em cima e texto super-pequeno em baixo.
-- A Margem da área principal do dashboard receberá um `padding-bottom: 90px` para evitar que os gráficos sumam atrás da barra.
+### 1. Transformar o site num Aplicativo PWA (`manifest.json`)
+- **[NEW] `public/manifest.json`**: Vamos arquitetar e injetar o motor de base de App. Ele dita as cores do pre-loader, nome (`Riosul Fleet`), escopo, esconder barra de endereço, e atrelar aquele logo circular como o ícone 192x192 que será cravado no celular.
+- **[MODIFY] `index.html`**: Conectar a tag do manifest e tema global de cor da barra do Android e iOS (`theme-color`, `apple-mobile-web-app-capable`).
 
-### 2. Gráfico de Histórico (Time-Series) - `App.jsx`
-- **Agregação Dinâmica (`useMemo`)**: Criaremos o `historyAggr`, mapeando os dados filtrados (`filteredData`) pelos identificadores de tempo (Agrupando por Mês).
-- **Injeção de um Composto visual (Área ou Linha)**: Inseriremos um `<AreaChart>` ou `<LineChart>` do Recharts largo, de 100% de largura por baixo dos Cards superiores, e por cima ou abaixo dos atuais gráficos de colunas. Esse gráfico passará a sensação de fluidez e "Evolução Temporal".
-- O gráfico conterá duas linhas: Faturamento (Verde-azulado) e Despesas (Vermelho opaco), evidenciando visualmente em quais meses houve descompasso da margem.
-- Como ele consome `filteredData`, as informações do gráfico naturalmente respeitarão os filtros no topo. Ex: Ao buscar apenas por "Caminhões", a curva vai despencar apenas para a evolução histórica baseada na despesa dessa categoria.
+### 2. Nova Tela no Menu: "Instalar App" (`App.jsx`)
+- Adicionaremos uma nova aba (`activeTab === 'install'`) no menu lateral acompanhada do ícone estético de Smartphone (`Smartphone`).
+- **View Dinâmica**: A tela terá visuais Glassmorphism explicando que é possível baixar a ferramenta pro celular:
+  - **Para Android:** Haverá código local ouvindo o gatilho global `window.addEventListener('beforeinstallprompt')`. Se o sistema operacional Android der permissão na nuvem, um **Botão Verde Brilhante** acenderá, bastando 1 clique para injetar direto no celular.
+  - **Para iPhone:** Um tutorial enxuto, luxuoso e visual com ícones nativos instruindo o gestor sobre como ativar pela barra do Safari.
 
-## Verification Plan
-- [ ] Ativar visão Mobile via ferramentas do navegador para atestar o encaixe preciso da *Tab Bar*.
-- [ ] Checar no modo Desktop se a versão *Retrátil Lateral* do menu segue intacta.
-- [ ] Filtrar dados no dashboard e examinar se a curva de linha do novo gráfico reage na hora.
+## Perguntas em Aberto
+
+> [!WARNING]
+> Como a Apple (iOS) bloqueia a lógica do clique único mundialmente para sites, o plano acima (Botão para Android, Passos para iPhone) atende sua vontade sem quebrar a harmonia executiva do nosso Web App corporativo?
