@@ -271,7 +271,11 @@ function App() {
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <img src="/favicon-circle.png" alt="Riosul" className="mobile-logo" />
                 <h1 style={{ marginBottom: 0 }}>
-                  {activeTab === 'dashboard' ? 'Dashboard Executivo' : activeTab === 'settings' ? 'Configuração' : activeTab === 'install' ? 'Aplicativo' : 'Gestão de Frota'}
+                  {activeTab === 'dashboard'
+                    ? (isWindowMobile ? 'Dashboard' : 'Dashboard Executivo')
+                    : activeTab === 'settings' ? 'Configuração'
+                    : activeTab === 'install' ? 'Aplicativo'
+                    : 'Gestão de Frota'}
                 </h1>
               </div>
             </div>

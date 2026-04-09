@@ -12,7 +12,6 @@
   "start_url": "/",
   "background_color": "#111827",
   "display": "standalone",
-  "orientation": "portrait",
   "scope": "/",
   "theme_color": "#10b981",
   "description": "Dashboard Executivo e Gestão de Frotas Riosul"
