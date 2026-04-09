@@ -1,0 +1,10 @@
+# Checklist de Mobile e Configuração de Back-End Mocks
+
+- [/] Modificar CSS Base (`index.css`)
+  - [ ] Adicionar `@media` query para Grid 1fr (<768px).
+  - [ ] Adicionar lógica de barra lateral fixa/modal em resoluções minúsculas.
+- [ ] Atualizar componente Dashboard (`App.jsx`)
+  - [ ] Ajustar `outerRadius` do React Recharts `<PieChart>` para 60% visando blindar cortes.
+  - [ ] Reinserir o estado da aba de Configurações no Menu.
+  - [ ] Escrever o código front-end (UI Elements) pro formulário e box DRE/File Upload.
+  - [ ] Injetar botão "Database API" para configuração de API REST simulada.

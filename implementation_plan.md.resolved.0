@@ -1,0 +1,39 @@
+# Implementação de Responsividade, Gráfico e Fonte de Dados
+
+Este plano de implementação adiciona adaptabilidade mobile ao dashboard, corrige o corte das legendas no gráfico circular e implementa os requisitos de visualização das configurações para as fontes de dados via Upload e API.
+
+## Proposed Changes
+
+### CSS e Responsividade (Mobile First)
+
+Adicionaremos `@media` queries no arquivo base para transformar a estrutura de Grid de colunas em layout de linha única.
+
+#### [MODIFY] `index.css`
+- Adicionar `@media (max-width: 768px)`:
+  - `.grid-cards`: mudar de `repeat(3, 1fr)` para `1fr` (um card por linha).
+  - `.grid-charts`: mudar de `2fr 1fr` para `1fr` (um gráfico em cima do outro).
+  - Reduzir as margens de `padding` de 40px para 20px ou 15px em telas menores.
+  - Sidebar: Na visualização móvel, a sidebar ocupará 100% da tela quando aberta, ou sumirá da tela quando recolhida (ao invés de 80px), usando um posicionamento `absolute` sobreposto ao conteúdo, ganhando muito mais espaço para o celular.
+
+### Correção de Gráficos e Nova Visualização
+
+#### [MODIFY] `App.jsx`
+- **Ajuste Recharts PieChart**: Alterar a propriedade `outerRadius` do gráfico de torta de 80% para 65% ou 70% e adicionar margens externas horizontais. Isso evita matematicamente que o texto do Recharts saia dos limites do SVG e seja cortado.
+- **Painel de Configurações de Origem**: 
+  - Reviver o menu `Configurações` (com um ícone `Settings` na engrenagem).
+  - Desenhar o layout da aba de configurações (se `activeTab === 'settings'`).
+  - Dividir a aba em dois blocos configuráveis com seletor (Radio/Toggle):
+    1. **Upload de DRE (Excel/CSV)**: Um box tracejado de arrastar e soltar (drag & drop) usando um `<input type="file" />`.
+    2. **Integração por API**: Campos (inputs) para inserir o IP/URL e Token/Chave de autenticação, seguido de um botão mock de "Testar Conexão".
+
+## Estratégia de Execução
+
+1. Criar e aplicar os seletores de CSS no `index.css`.
+2. Refatorar os retornos visuais do `PieChart` em `App.jsx`.
+3. Escrever e incluir os novos componentes/HTML do painel de administração em `App.jsx`, preservando a consistência do design agressivo e neon atual.
+
+## Verification Plan
+
+- [ ] Simular tela de IPhone/Android na interface e provar alinhamento de Cards e Gráficos únicos.
+- [ ] Analisar o gráfico de rosca (Composição de Gastos) em tela cheia e retraída para constatar as bordas dos labels intactas.
+- [ ] Validar a interação para a seleção de fontes de dados no novo painel de `Configurações`.
