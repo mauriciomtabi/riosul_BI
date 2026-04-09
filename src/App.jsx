@@ -338,7 +338,7 @@ function App() {
                   <div className="card-subtext">
                     Meta: {formatNum(kpis.faturamento.previsto)}
                     {kpis.faturamento.previsto > 0 && (
-                      <span className={kpis.faturamento.realizado >= kpis.faturamento.previsto ? 'text-green' : 'text-red'} style={{ marginLeft: 'auto', fontWeight: 600 }}>
+                      <span style={{ marginLeft: 'auto', fontWeight: 600, color: kpis.faturamento.realizado >= kpis.faturamento.previsto ? 'var(--riosul-green)' : 'var(--riosul-yellow)' }}>
                         {((kpis.faturamento.realizado / kpis.faturamento.previsto) * 100).toFixed(1)}%
                       </span>
                     )}
@@ -366,7 +366,7 @@ function App() {
                   <div className="card-subtext">
                     Orçamento: {formatNum(kpis.despesa.previsto)}
                     {kpis.despesa.previsto > 0 && (
-                       <span className={kpis.despesa.realizado <= kpis.despesa.previsto ? 'text-green' : 'text-red'} style={{ marginLeft: 'auto', fontWeight: 600 }}>
+                       <span style={{ marginLeft: 'auto', fontWeight: 600, color: kpis.despesa.realizado <= kpis.despesa.previsto ? 'var(--riosul-green)' : 'var(--riosul-red)' }}>
                          {((kpis.despesa.realizado / kpis.despesa.previsto) * 100).toFixed(1)}%
                        </span>
                     )}
@@ -396,7 +396,7 @@ function App() {
                   <div className="card-subtext">
                     Previsto: {formatNum(kpis.margem.previsto)}
                     {kpis.margem.previsto > 0 && (
-                      <span className={kpis.margem.realizado >= kpis.margem.previsto ? 'text-green' : 'text-red'} style={{ marginLeft: 'auto', fontWeight: 600 }}>
+                      <span style={{ marginLeft: 'auto', fontWeight: 600, color: kpis.margem.realizado >= kpis.margem.previsto ? 'var(--riosul-green)' : 'var(--riosul-red)' }}>
                         {((kpis.margem.realizado / kpis.margem.previsto) * 100).toFixed(1)}%
                       </span>
                     )}
