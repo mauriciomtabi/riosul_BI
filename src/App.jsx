@@ -35,8 +35,12 @@ function App() {
   // PWA Install Prompt
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+  const [isStandalone, setIsStandalone] = useState(false);
 
   useEffect(() => {
+    if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
+      setIsStandalone(true);
+    }
     const handleBeforeInstallPrompt = (e) => {
       e.preventDefault();
       setDeferredPrompt(e);
@@ -51,6 +55,7 @@ function App() {
     const { outcome } = await deferredPrompt.userChoice;
     if (outcome === 'accepted') {
       setDeferredPrompt(null);
+      setIsStandalone(true);
     }
   };
 
@@ -235,9 +240,11 @@ function App() {
           <li className={`nav-item ${activeTab === 'settings' ? 'active' : ''}`} onClick={() => setActiveTab('settings')} title="Configurações">
             <Settings size={20} /> <span className="sidebar-text">Configurações</span>
           </li>
-          <li className={`nav-item ${activeTab === 'install' ? 'active' : ''}`} onClick={() => setActiveTab('install')} title="Instalar App">
-            <Smartphone size={20} /> <span className="sidebar-text">Instalar</span>
-          </li>
+          {!isStandalone && (
+            <li className={`nav-item ${activeTab === 'install' ? 'active' : ''}`} onClick={() => setActiveTab('install')} title="Instalar App">
+              <Smartphone size={20} /> <span className="sidebar-text">Instalar</span>
+            </li>
+          )}
           <div className="mobile-logout-spacer"></div>
           <li className="nav-item" title="Sair" onClick={() => setIsAuthenticated(false)}>
             <LogOut size={20} /> <span className="sidebar-text">Sair</span>
