@@ -1,10 +1,9 @@
 # Checklist: Instalação PWA
 
-- [/] Configuração Nativa Web (Arquitetura PWA)
-  - [ ] Criar `manifest.json` com especificações do ícone, splash screen e standalone mode.
-  - [ ] Adaptar tags `<meta>` do `index.html` para permissões iOS/Android.
-- [ ] Criação do Módulo "Instalar App" (`App.jsx`)
-  - [ ] Injetar botão extra "Instalar App" no Navigation.
-  - [ ] Adicionar evento global `window.addEventListener('beforeinstallprompt')`.
-  - [ ] Injetar Box explicativo híbrido (condicional se é iOS ou se é Prompt Nativo de Android).
-  - [ ] Desenhão do botão Verde Mágico de "Baixar App".
+- [x] Configuração Nativa Web (Arquitetura PWA)
+  - [x] Criar `manifest.json` com especificações do ícone, colorização e app-standalone mode.
+  - [x] Adaptar tags `<meta>` e links `<head>` do `index.html` para iOS/Android.
+- [x] Criação do Módulo "Instalar App" (`App.jsx`)
+  - [x] Injetar botão "Instalar" na Tab Navigation inferior do Mobile e lateral do Desktop.
+  - [x] Escutar o evento Global PWA que habilita botão único mágico de instalar (Android).
+  - [x] Layout UI condicional: Botão brilhante versus Regras por escrito da Apple para o iPhone.
