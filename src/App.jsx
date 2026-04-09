@@ -4,7 +4,7 @@ import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, Legend, ResponsiveContainer,
   PieChart, Pie, Cell, LabelList, AreaChart, Area
 } from 'recharts';
-import { LayoutDashboard, Truck, LogOut, TrendingUp, TrendingDown, DollarSign, Wallet, Menu, Moon, Sun, Settings, UploadCloud, Database, User, Lock, BarChart2, PieChart as PieChartIcon, Activity, Smartphone } from 'lucide-react';
+import { LayoutDashboard, Truck, LogOut, TrendingUp, TrendingDown, DollarSign, Wallet, Menu, Moon, Sun, Settings, UploadCloud, Database, User, Lock, BarChart2, PieChart as PieChartIcon, Activity, Smartphone, Share2 } from 'lucide-react';
 import './index.css';
 
 const formatNum = (value) => {
@@ -51,6 +51,24 @@ function App() {
     const { outcome } = await deferredPrompt.userChoice;
     if (outcome === 'accepted') {
       setDeferredPrompt(null);
+    }
+  };
+
+  const handleShare = async () => {
+    const shareData = {
+      title: 'BI Grupo Riosul',
+      text: 'Acesse o Painel de Gestão e Dashboard Analítico da Riosul.',
+      url: window.location.href,
+    };
+    if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
+      try {
+        await navigator.share(shareData);
+      } catch (err) {
+        console.log('Compartilhamento abortado', err);
+      }
+    } else {
+      navigator.clipboard.writeText(window.location.href);
+      alert('Link oficial copiado para seu dispositivo!');
     }
   };
 
@@ -242,9 +260,14 @@ function App() {
               </div>
             </div>
             
-            <button title="Modo Claro/Escuro" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} style={{ background: 'transparent', border: 'none', color: 'var(--text-main)', cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
-              {theme === 'dark' ? <Sun size={24} /> : <Moon size={24} />}
-            </button>
+            <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
+              <button title="Compartilhar Painel" onClick={handleShare} style={{ background: 'transparent', border: 'none', color: 'var(--text-main)', cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
+                <Share2 size={24} />
+              </button>
+              <button title="Modo Claro/Escuro" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} style={{ background: 'transparent', border: 'none', color: 'var(--text-main)', cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
+                {theme === 'dark' ? <Sun size={24} /> : <Moon size={24} />}
+              </button>
+            </div>
           </div>
           
           {(activeTab === 'dashboard' || activeTab === 'frota') && (
