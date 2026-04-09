@@ -36,17 +36,25 @@ function App() {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
   const [isStandalone, setIsStandalone] = useState(false);
+  const [isWindowMobile, setIsWindowMobile] = useState(window.innerWidth < 800);
 
   useEffect(() => {
     if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
       setIsStandalone(true);
     }
+    
+    const handleResize = () => setIsWindowMobile(window.innerWidth < 800);
+    window.addEventListener('resize', handleResize);
+
     const handleBeforeInstallPrompt = (e) => {
       e.preventDefault();
       setDeferredPrompt(e);
     };
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-    return () => window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
   const handleInstallClick = async () => {
@@ -459,10 +467,10 @@ function App() {
                       />
                       <Legend />
                       <Bar dataKey="previsto" name="Despesa Orçada" fill="#3b82f6" radius={[4, 4, 0, 0]}>
-                        <LabelList dataKey="previsto" position="top" fill="var(--text-main)" fontSize={12} formatter={(value) => formatAbbrev(value)} />
+                        {!isWindowMobile && <LabelList dataKey="previsto" position="top" fill="var(--text-main)" fontSize={12} formatter={(value) => formatAbbrev(value)} />}
                       </Bar>
                       <Bar dataKey="realizado" name="Despesa Realizada" fill="#ef4444" radius={[4, 4, 0, 0]}>
-                        <LabelList dataKey="realizado" position="top" fill="var(--text-main)" fontSize={12} formatter={(value) => formatAbbrev(value)} />
+                        {!isWindowMobile && <LabelList dataKey="realizado" position="top" fill="var(--text-main)" fontSize={12} formatter={(value) => formatAbbrev(value)} />}
                       </Bar>
                     </BarChart>
                   </ResponsiveContainer>
@@ -579,7 +587,7 @@ function App() {
               Defina como o painel Business Intelligence será alimentado com os relatórios consolidados no futuro.
             </p>
 
-            <div style={{ display: 'flex', gap: '20px', marginBottom: '30px' }}>
+            <div style={{ display: 'flex', gap: '20px', marginBottom: '30px', flexDirection: isWindowMobile ? 'column' : 'row' }}>
                <div 
                   onClick={() => setDataSourceType('upload')}
                   style={{ flex: 1, padding: '20px', border: `2px solid ${dataSourceType === 'upload' ? 'var(--riosul-green)' : 'var(--card-border)'}`, borderRadius: '12px', cursor: 'pointer', backgroundColor: dataSourceType === 'upload' ? 'rgba(16, 185, 129, 0.05)' : 'transparent', transition: 'all 0.2s ease', display: 'flex', alignItems: 'center', gap: '15px' }}>
