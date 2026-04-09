@@ -138,6 +138,15 @@ body {
 }
 
 /* Grid Layout */
+.mobile-logo {
+  display: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
 .period-selector {
   display: flex;
   gap: 15px;
@@ -356,6 +365,10 @@ body.light-mode .card:hover {
     width: 100%;
     font-size: 0.85rem !important;
     padding: 8px 10px !important;
+  }
+
+  .mobile-logo {
+    display: block !important;
   }
 
   /* Tab Bar Mobile Inferior */

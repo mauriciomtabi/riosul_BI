@@ -268,7 +268,8 @@ function App() {
               <button title="Recolher/Expandir Menu" onClick={() => setIsSidebarOpen(!isSidebarOpen)} style={{ background: 'transparent', border: 'none', color: 'var(--text-main)', cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
                 <Menu size={28} />
               </button>
-              <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <img src="/favicon-circle.png" alt="Riosul" className="mobile-logo" />
                 <h1 style={{ marginBottom: 0 }}>
                   {activeTab === 'dashboard' ? 'Dashboard Executivo' : activeTab === 'settings' ? 'Configuração' : activeTab === 'install' ? 'Aplicativo' : 'Gestão de Frota'}
                 </h1>
