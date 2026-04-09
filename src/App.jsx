@@ -237,7 +237,7 @@ function App() {
               </button>
               <div>
                 <h1 style={{ marginBottom: 0 }}>
-                  {activeTab === 'dashboard' ? 'Dashboard Executivo' : (activeTab === 'settings' ? 'Configuração' : 'Gestão de Frota')}
+                  {activeTab === 'dashboard' ? 'Dashboard Executivo' : activeTab === 'settings' ? 'Configuração' : activeTab === 'install' ? 'Aplicativo' : 'Gestão de Frota'}
                 </h1>
               </div>
             </div>
@@ -247,8 +247,9 @@ function App() {
             </button>
           </div>
           
-          <div className="period-selector">
-            <select value={selectedYear} onChange={(e) => setSelectedYear(e.target.value)} className="custom-select">
+          {(activeTab === 'dashboard' || activeTab === 'frota') && (
+            <div className="period-selector">
+              <select value={selectedYear} onChange={(e) => setSelectedYear(e.target.value)} className="custom-select">
               <option value="Todos">Ano: Todos</option>
               <option value="2024">2024</option>
               <option value="2025">2025</option>
@@ -272,6 +273,7 @@ function App() {
               {CATEGORY_NAMES.map(c => <option key={c} value={c}>{c}</option>)}
             </select>
           </div>
+          )}
         </header>
 
         <div style={{ padding: '15px 40px 40px 40px' }}>
