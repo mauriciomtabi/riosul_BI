@@ -3,6 +3,7 @@ import { rawDataset } from './data';
 import { 
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, Legend, ResponsiveContainer,
   PieChart, Pie, Cell, LabelList, AreaChart, Area
+} from 'recharts';
 import { LayoutDashboard, Truck, LogOut, TrendingUp, TrendingDown, DollarSign, Wallet, Menu, Moon, Sun, Settings, UploadCloud, Database, User, Lock, BarChart2, PieChart as PieChartIcon, Activity, Smartphone } from 'lucide-react';
 import './index.css';
 
