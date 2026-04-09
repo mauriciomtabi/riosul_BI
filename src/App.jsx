@@ -4,7 +4,7 @@ import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, Legend, ResponsiveContainer,
   PieChart, Pie, Cell, LabelList
 } from 'recharts';
-import { LayoutDashboard, Truck, LogOut, TrendingUp, TrendingDown, DollarSign, Wallet, Menu, Moon, Sun, Settings, UploadCloud, Database, User, Lock } from 'lucide-react';
+import { LayoutDashboard, Truck, LogOut, TrendingUp, TrendingDown, DollarSign, Wallet, Menu, Moon, Sun, Settings, UploadCloud, Database, User, Lock, BarChart2, PieChart as PieChartIcon } from 'lucide-react';
 import './index.css';
 
 const formatNum = (value) => {
@@ -322,7 +322,9 @@ function App() {
             {/* Charts */}
             <div className="grid-charts">
               <div className="card">
-                <div className="card-title">Previsto versus Realizado das Despesas por Categoria</div>
+                <div className="card-title" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <BarChart2 size={20} color="var(--text-muted)" /> Previsto versus Realizado das Despesas por Categoria
+                </div>
                 <div style={{ height: 350, width: '100%', marginTop: '20px' }}>
                   <ResponsiveContainer>
                     <BarChart data={categoriesAggr} margin={{ top: 20, right: 30, left: 0, bottom: 5 }}>
@@ -346,7 +348,9 @@ function App() {
               </div>
 
               <div className="card" style={{ display: 'flex', flexDirection: 'column' }}>
-                <div className="card-title">Composição de Gastos</div>
+                <div className="card-title" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <PieChartIcon size={20} color="var(--text-muted)" /> Composição de Gastos
+                </div>
                 <div style={{ height: 350, width: '100%', position: 'relative', marginTop: 'auto' }}>
                   {categoriesAggr.length === 0 ? (
                     <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', color: 'var(--text-muted)' }}>Sem dados</div>
