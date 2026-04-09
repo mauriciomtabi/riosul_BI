@@ -2,9 +2,9 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { rawDataset } from './data';
 import { 
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, Legend, ResponsiveContainer,
-  PieChart, Pie, Cell, LabelList
+  PieChart, Pie, Cell, LabelList, AreaChart, Area
 } from 'recharts';
-import { LayoutDashboard, Truck, LogOut, TrendingUp, TrendingDown, DollarSign, Wallet, Menu, Moon, Sun, Settings, UploadCloud, Database, User, Lock, BarChart2, PieChart as PieChartIcon } from 'lucide-react';
+import { LayoutDashboard, Truck, LogOut, TrendingUp, TrendingDown, DollarSign, Wallet, Menu, Moon, Sun, Settings, UploadCloud, Database, User, Lock, BarChart2, PieChart as PieChartIcon, Activity } from 'lucide-react';
 import './index.css';
 
 const formatNum = (value) => {
@@ -112,6 +112,29 @@ function App() {
     return Object.values(map);
   }, [filteredData]);
 
+  const historyAggr = useMemo(() => {
+    const map = {};
+    const monthsOrder = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
+    
+    filteredData.forEach(item => {
+      // Ignora dados nulos ou com agregados ausentes
+      if (!item.ano || !item.mes) return;
+      const key = `${item.mes}/${item.ano}`;
+      if (!map[key]) {
+        map[key] = { label: key, mes: item.mes, ano: item.ano, faturamento: 0, despesa: 0 };
+      }
+      map[key].faturamento += item.faturamentoRealizado || 0;
+      map[key].despesa += item.despesaRealizada || 0;
+    });
+
+    const arr = Object.values(map);
+    arr.sort((a, b) => {
+       if (a.ano !== b.ano) return parseInt(a.ano) - parseInt(b.ano);
+       return monthsOrder.indexOf(a.mes) - monthsOrder.indexOf(b.mes);
+    });
+    return arr;
+  }, [filteredData]);
+
   // Se não estiver logado, renderiza o box de Autenticação isolando o resto do DOM inteiro
   if (!isAuthenticated) {
     return (
@@ -172,12 +195,11 @@ function App() {
           <li className={`nav-item ${activeTab === 'settings' ? 'active' : ''}`} onClick={() => setActiveTab('settings')} title="Configurações">
             <Settings size={20} /> <span className="sidebar-text">Configurações</span>
           </li>
-        </ul>
-        <div style={{ marginTop: 'auto' }}>
+          <div className="mobile-logout-spacer"></div>
           <li className="nav-item" title="Sair" onClick={() => setIsAuthenticated(false)}>
             <LogOut size={20} /> <span className="sidebar-text">Sair</span>
           </li>
-        </div>
+        </ul>
       </aside>
 
       {/* Main Content */}
@@ -321,6 +343,44 @@ function App() {
 
             {/* Charts */}
             <div className="grid-charts">
+              {/* HISTORICAL CHART - FULL WIDTH */}
+              <div className="card" style={{ gridColumn: '1 / -1' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '15px', marginBottom: '20px' }}>
+                  <div className="icon-box green" style={{ marginBottom: 0 }}>
+                    <Activity size={24} />
+                  </div>
+                  <div className="card-title" style={{ marginBottom: 0 }}>
+                    Evolução Histórica do Período
+                  </div>
+                </div>
+                <div style={{ height: 350, width: '100%' }}>
+                  <ResponsiveContainer>
+                    <AreaChart data={historyAggr} margin={{ top: 20, right: 30, left: 0, bottom: 5 }}>
+                      <defs>
+                        <linearGradient id="colorFat" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor="var(--riosul-green)" stopOpacity={0.8}/>
+                          <stop offset="95%" stopColor="var(--riosul-green)" stopOpacity={0}/>
+                        </linearGradient>
+                        <linearGradient id="colorDes" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor="var(--riosul-red)" stopOpacity={0.8}/>
+                          <stop offset="95%" stopColor="var(--riosul-red)" stopOpacity={0}/>
+                        </linearGradient>
+                      </defs>
+                      <CartesianGrid strokeDasharray="3 3" stroke="var(--card-border)" vertical={false} />
+                      <XAxis dataKey="label" stroke="var(--text-muted)" />
+                      <YAxis stroke="var(--text-muted)" width={80} tickFormatter={(value) => formatAbbrev(value)} />
+                      <RechartsTooltip 
+                        contentStyle={{ backgroundColor: 'var(--card-bg)', borderColor: 'var(--card-border)', color: 'var(--text-main)' }}
+                        formatter={(value) => formatNum(value)}
+                      />
+                      <Legend />
+                      <Area type="monotone" dataKey="faturamento" name="Faturamento Realizado" stroke="var(--riosul-green)" fillOpacity={1} fill="url(#colorFat)" />
+                      <Area type="monotone" dataKey="despesa" name="Despesa Realizada" stroke="var(--riosul-red)" fillOpacity={1} fill="url(#colorDes)" />
+                    </AreaChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
+
               <div className="card">
                 <div style={{ display: 'flex', alignItems: 'center', gap: '15px', marginBottom: '20px' }}>
                   <div className="icon-box blue" style={{ marginBottom: 0 }}>

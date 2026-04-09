@@ -82,10 +82,16 @@ body {
 }
 
 .nav-menu {
-  list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  list-style: none;
+  padding: 0;
+  margin-top: 15px;
+  height: 100%;
+}
+
+.mobile-logout-spacer {
+  margin-top: auto;
 }
 
 .nav-item {
@@ -342,20 +348,78 @@ body.light-mode .card:hover {
     width: 100%;
   }
 
-  /* Ajustes Mobile no Nav/Sidebar */
+  /* Tab Bar Mobile Inferior */
   .sidebar {
     position: fixed;
-    height: 100vh;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    height: 70px;
+    flex-direction: row;
     z-index: 999;
-    box-shadow: 5px 0 15px rgba(0,0,0,0.5);
+    align-items: center;
+    justify-content: space-between;
+    padding: 0;
+    border-top: 1px solid var(--card-border);
+    border-right: none;
+    background-color: var(--card-bg);
+    transform: none !important;
+  }
+  
+  .sidebar.collapsed {
+    transform: none;
+    width: 100vw;
   }
 
-  .sidebar.collapsed {
-    transform: translateX(-100%);
-    width: 250px; /* Mantem largura cheia quando expandir, e oculta tudo quando contrair */
-    padding: 0;
-    box-shadow: none;
-    border: none;
+  .sidebar-logo {
+    display: none !important;
+  }
+
+  .nav-menu {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
+    margin-top: 0;
+    padding: 0 10px;
+  }
+
+  .mobile-logout-spacer {
+    display: none !important; /* Em modo barra inferior ele nao tem espaço elastico, e distribuiado igual */
+  }
+
+  .nav-item {
+    flex-direction: column;
+    padding: 8px 5px;
+    margin-bottom: 0;
+    border-left: none;
+    border-bottom: 3px solid transparent;
+    border-radius: 4px;
+    justify-content: center;
+    flex: 1;
+    cursor: pointer;
+  }
+
+  .nav-item.active {
+    background-color: transparent;
+    border-left: none;
+    border-bottom: 3px solid var(--riosul-green);
+    color: var(--riosul-green);
+  }
+
+  .sidebar-text {
+    font-size: 0.65rem;
+    margin-left: 0;
+    margin-top: 4px;
+    display: block !important;
+  }
+
+  .main-content {
+    padding-bottom: 90px;
+  }
+
+  button[title="Recolher/Expandir Menu"] {
+    display: none !important; /* Esconde o botão hamburguer pois nao havera o que expandir na esquerda */
   }
 }
 

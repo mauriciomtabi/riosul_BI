@@ -1,6 +1,6 @@
 {
   "artifactType": "ARTIFACT_TYPE_TASK",
-  "summary": "Atualizar as tarefas agora que as dependencias, o css e o login estao 100% implementados.",
-  "updatedAt": "2026-04-09T01:09:21.094688700Z",
-  "version": "3"
+  "summary": "Checklist de execução da barra de navegação inferior estilo celular e do gráfico de regressão histórica interagindo dinamicamente.",
+  "updatedAt": "2026-04-09T01:27:32.884190200Z",
+  "version": "4"
 }

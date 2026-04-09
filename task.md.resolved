@@ -1,10 +1,11 @@
-# Checklist: Módulo de Autenticação/Segurança
+# Checklist: Evolução para App e History Chart
 
-- [x] Modificar CSS Base (`index.css`)
-  - [x] Adicionar classes `.login-wrapper` para fundo radial 100vh overlay.
-  - [x] Adicionar classes de estilos premium para Inputs, Labels e Botões principais do formulário.
-- [x] Atualizar componente Dashboard (`App.jsx`)
-  - [x] Habilitar o `useState` de `isAuthenticated` (default `false`).
-  - [x] Estruturar o retorno condicional do Login (trava o DOM se deslogado).
-  - [x] Construir a UI local de Login interativa e de alto design (SaaS).
-  - [x] Ancorar evento de mudança booleana (`setIsAuthenticated(false)`) ao Botão `Sair` do menu retrátil.
+- [/] Atualizar Interface Mobile (`index.css`)
+  - [ ] Retirar comportamento oculto/expandido da Sidebar em telas pequenas.
+  - [ ] Configurar flexbox inferior para a aba inferior.
+  - [ ] Transformar `nav-items` em ícones quadrados com fontes minúsculas de Tab.
+- [ ] Construir Motor de Time-Series (`App.jsx`)
+  - [ ] Importar `AreaChart` e `Area` e ícone `CalendarDays` (opcional).
+  - [ ] Construir o hook associativo `historyAggr` agregando receitas e custos por Mês.
+  - [ ] Projetar a Grid visual expandível e injetar o Chart.
+  - [ ] Ocultar Logo e botão de Sair no Mobile Navigation ou arrumar o seu Flex position.
