@@ -85,41 +85,18 @@ function App() {
     }
   };
 
+  const DEMO_EMAIL = 'demo@riosul.com.br';
+  const DEMO_PASSWORD = 'riosul2026';
+  const [loginError, setLoginError] = useState(false);
+
   const handleLogin = (e) => {
     e.preventDefault();
-    if (loginEmail && loginPassword) {
+    if (loginEmail === DEMO_EMAIL && loginPassword === DEMO_PASSWORD) {
+      setLoginError(false);
       setIsAuthenticated(true);
+    } else {
+      setLoginError(true);
     }
-  };
-
-  // DEMO ACCESS — Formulário de Identificação de Convidado
-  const APPS_SCRIPT_URL = 'COLE_AQUI_A_URL_DO_APPS_SCRIPT'; // <- substituir depois de publicar o script
-  const [showDemoModal, setShowDemoModal] = useState(false);
-  const [demoNome, setDemoNome] = useState('');
-  const [demoEmail, setDemoEmail] = useState('');
-  const [demoEmpresa, setDemoEmpresa] = useState('');
-  const [demoLoading, setDemoLoading] = useState(false);
-
-  const handleDemoAccess = async (e) => {
-    e.preventDefault();
-    setDemoLoading(true);
-    const payload = {
-      nome: demoNome,
-      email: demoEmail,
-      empresa: demoEmpresa,
-      dispositivo: `${navigator.platform} — ${window.innerWidth}x${window.innerHeight}`,
-      sistema: navigator.userAgent.includes('Mobile') ? 'Mobile' : 'Desktop',
-    };
-    try {
-      await fetch(APPS_SCRIPT_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-    } catch (_) { /* silencioso — não bloquear o acesso se falhar */ }
-    setDemoLoading(false);
-    setIsAuthenticated(true);
   };
 
   // Filtros
@@ -218,7 +195,6 @@ function App() {
     return arr;
   }, [filteredData]);
 
-  // Se não estiver logado, renderiza o box de Autenticação isolando o resto do DOM inteiro
   if (!isAuthenticated) {
     return (
       <div className="login-wrapper">
@@ -229,73 +205,29 @@ function App() {
             </div>
             <form onSubmit={handleLogin}>
                <div className="login-input-group">
-                 <label>E-mail Corporativo</label>
+                 <label>E-mail</label>
                  <div style={{ position: 'relative' }}>
                    <div className="login-icon-wrap" style={{ position: 'absolute', top: '50%', transform: 'translateY(-50%)', left: '16px', display: 'flex', alignItems: 'center' }}><User size={18}/></div>
-                   <input type="email" placeholder="nome.sobrenome@riosul.com.br" className="login-input" required value={loginEmail} onChange={(e) => setLoginEmail(e.target.value)} />
+                   <input type="email" placeholder="demo@riosul.com.br" className="login-input" required value={loginEmail} onChange={(e) => setLoginEmail(e.target.value)} />
                  </div>
                </div>
                <div className="login-input-group">
-                 <label>Senha de Acesso</label>
+                 <label>Senha</label>
                  <div style={{ position: 'relative' }}>
                    <div className="login-icon-wrap" style={{ position: 'absolute', top: '50%', transform: 'translateY(-50%)', left: '16px', display: 'flex', alignItems: 'center' }}><Lock size={18}/></div>
-                   <input type="password" placeholder="••••••••••••" className="login-input" required value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)} />
+                   <input type="password" placeholder="••••••••••••" className="login-input" required value={loginPassword} onChange={(e) => { setLoginPassword(e.target.value); setLoginError(false); }} />
                  </div>
                </div>
-               <div className="flex-between" style={{ marginBottom: '25px', fontSize: '0.9rem' }}>
-                 <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', color: 'var(--text-muted)' }}>
-                    <input type="checkbox" style={{ accentColor: 'var(--riosul-green)' }} /> Lembrar credenciais
-                 </label>
-                 <a href="#reset" style={{ color: 'var(--riosul-green)', textDecoration: 'none', fontWeight: 500 }}>Esqueceu a senha?</a>
-               </div>
+               {loginError && (
+                 <p style={{ color: 'var(--riosul-red)', fontSize: '0.88rem', marginBottom: '15px', textAlign: 'center' }}>
+                   Usuário ou senha incorretos. Tente novamente.
+                 </p>
+               )}
                <button type="submit" className="login-btn">
-                 Validar e Iniciar Sessão
+                 Iniciar Sessão
                </button>
             </form>
-            <div style={{ margin: '20px 0', display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <div style={{ flex: 1, height: '1px', backgroundColor: 'var(--card-border)' }} />
-              <span style={{ color: 'var(--text-muted)', fontSize: '0.85rem', whiteSpace: 'nowrap' }}>ou acesse para avaliar</span>
-              <div style={{ flex: 1, height: '1px', backgroundColor: 'var(--card-border)' }} />
-            </div>
-            <button
-              onClick={() => setShowDemoModal(true)}
-              style={{ width: '100%', padding: '14px', borderRadius: '12px', border: '1px solid var(--card-border)', background: 'transparent', color: 'var(--text-main)', cursor: 'pointer', fontFamily: 'Inter, sans-serif', fontSize: '0.95rem', fontWeight: 500, transition: 'all 0.2s' }}
-              onMouseOver={e => e.currentTarget.style.borderColor = 'var(--riosul-green)'}
-              onMouseOut={e => e.currentTarget.style.borderColor = 'var(--card-border)'}
-            >
-              👤 Acessar como Convidado
-            </button>
          </div>
-
-         {/* Modal de Identificação do Convidado */}
-         {showDemoModal && (
-           <div style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.7)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999, padding: '20px' }}>
-             <div className="login-card" style={{ maxWidth: '430px', width: '100%', padding: '35px' }}>
-               <h3 style={{ marginBottom: '8px', textAlign: 'center' }}>Acesso Convidado</h3>
-               <p style={{ color: 'var(--text-muted)', textAlign: 'center', marginBottom: '28px', fontSize: '0.9rem' }}>Preencha seus dados para acessar o painel em modo demonstração.</p>
-               <form onSubmit={handleDemoAccess}>
-                 <div className="login-input-group">
-                   <label>Nome Completo *</label>
-                   <input type="text" placeholder="Ex: João Silva" className="login-input" required value={demoNome} onChange={e => setDemoNome(e.target.value)} style={{ paddingLeft: '15px' }} />
-                 </div>
-                 <div className="login-input-group">
-                   <label>E-mail *</label>
-                   <input type="email" placeholder="Ex: joao@empresa.com.br" className="login-input" required value={demoEmail} onChange={e => setDemoEmail(e.target.value)} style={{ paddingLeft: '15px' }} />
-                 </div>
-                 <div className="login-input-group">
-                   <label>Empresa</label>
-                   <input type="text" placeholder="Ex: Transportes ABC" className="login-input" value={demoEmpresa} onChange={e => setDemoEmpresa(e.target.value)} style={{ paddingLeft: '15px' }} />
-                 </div>
-                 <div style={{ display: 'flex', gap: '12px', marginTop: '10px' }}>
-                   <button type="button" onClick={() => setShowDemoModal(false)} style={{ flex: 1, padding: '14px', borderRadius: '12px', border: '1px solid var(--card-border)', background: 'transparent', color: 'var(--text-muted)', cursor: 'pointer', fontFamily: 'Inter, sans-serif', fontSize: '0.95rem' }}>Cancelar</button>
-                   <button type="submit" className="login-btn" style={{ flex: 2, margin: 0 }} disabled={demoLoading}>
-                     {demoLoading ? 'Registrando...' : 'Entrar no Demo'}
-                   </button>
-                 </div>
-               </form>
-             </div>
-           </div>
-         )}
       </div>
     );
   }
