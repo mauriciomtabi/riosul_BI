@@ -246,7 +246,7 @@ function App() {
             </button>
           </div>
           
-          <div className="period-selector" style={{display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap'}}>
+          <div className="period-selector">
             <select value={selectedYear} onChange={(e) => setSelectedYear(e.target.value)} className="custom-select">
               <option value="Todos">Ano: Todos</option>
               <option value="2024">2024</option>

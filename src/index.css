@@ -138,6 +138,13 @@ body {
 }
 
 /* Grid Layout */
+.period-selector {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
 .grid-cards {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
