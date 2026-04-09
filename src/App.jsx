@@ -322,10 +322,15 @@ function App() {
             {/* Charts */}
             <div className="grid-charts">
               <div className="card">
-                <div className="card-title" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <BarChart2 size={20} color="var(--text-muted)" /> Previsto versus Realizado das Despesas por Categoria
+                <div style={{ display: 'flex', alignItems: 'center', gap: '15px', marginBottom: '20px' }}>
+                  <div className="icon-box blue" style={{ marginBottom: 0 }}>
+                    <BarChart2 size={24} />
+                  </div>
+                  <div className="card-title" style={{ marginBottom: 0 }}>
+                    Previsto versus Realizado das Despesas por Categoria
+                  </div>
                 </div>
-                <div style={{ height: 350, width: '100%', marginTop: '20px' }}>
+                <div style={{ height: 350, width: '100%' }}>
                   <ResponsiveContainer>
                     <BarChart data={categoriesAggr} margin={{ top: 20, right: 30, left: 0, bottom: 5 }}>
                       <CartesianGrid strokeDasharray="3 3" stroke="var(--card-border)" vertical={false} />
@@ -348,8 +353,13 @@ function App() {
               </div>
 
               <div className="card" style={{ display: 'flex', flexDirection: 'column' }}>
-                <div className="card-title" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <PieChartIcon size={20} color="var(--text-muted)" /> Composição de Gastos
+                <div style={{ display: 'flex', alignItems: 'center', gap: '15px', marginBottom: '20px' }}>
+                  <div className="icon-box red" style={{ marginBottom: 0 }}>
+                    <PieChartIcon size={24} />
+                  </div>
+                  <div className="card-title" style={{ marginBottom: 0 }}>
+                    Composição de Gastos
+                  </div>
                 </div>
                 <div style={{ height: 350, width: '100%', position: 'relative', marginTop: 'auto' }}>
                   {categoriesAggr.length === 0 ? (
